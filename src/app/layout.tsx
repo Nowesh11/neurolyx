@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
@@ -14,9 +14,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/**
+ * The icons themselves are picked up from the file conventions in this
+ * folder — `favicon.ico`, `icon.png` and `apple-icon.png` — so there is no
+ * `icons` key here. Next emits the `<link>` tags automatically.
+ */
 export const metadata: Metadata = {
-  title: "NLX",
-  description: "NLX — engineering, design and delivery.",
+  title: {
+    default: "NLX — AI automation & custom software",
+    template: "%s · NLX",
+  },
+  description:
+    "Independent AI automation and software studio. WhatsApp and AI chatbots, workflow automation, and custom web, mobile and desktop software — built end to end.",
+  applicationName: "NLX",
+};
+
+// Tints the browser chrome on mobile to the same stage colour as the site.
+export const viewport: Viewport = {
+  themeColor: "#080A0F",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
