@@ -77,7 +77,7 @@ function FooterLogo() {
       */}
       <span className="relative block h-9 w-12 shrink-0 overflow-hidden">
         <Image
-          src="/logo-dark.png"
+          src="/logo-gold.png"
           alt=""
           fill
           sizes="48px"
@@ -86,7 +86,7 @@ function FooterLogo() {
       </span>
       <span className="relative block h-7 w-20 shrink-0 overflow-hidden">
         <Image
-          src="/nlx-dark.png"
+          src="/nlx-gold.png"
           alt="NLX"
           fill
           sizes="80px"
@@ -113,45 +113,30 @@ export function SiteFooter() {
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(70% 60% at 50% 100%, rgba(59,130,246,0.12) 0%, rgba(8,10,15,0) 70%)",
+            "radial-gradient(60% 50% at 50% 100%, rgba(226,183,116,0.10) 0%, rgba(10,9,8,0) 70%)",
         }}
       />
 
-      {/* Oversized wordmark bled off the bottom edge, echoing the hero. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 -bottom-6 -z-10 flex justify-center overflow-hidden select-none"
-      >
-        <span
-          className="font-sans font-black text-[#F8FAFC] whitespace-nowrap"
-          style={{
-            opacity: 0.035,
-            letterSpacing: "-0.05em",
-            fontSize: "clamp(5rem, 18vw, 16rem)",
-            lineHeight: 0.8,
-          }}
-        >
-          NEUROLYX
-        </span>
-      </div>
-
       {/* ---------- CTA band ---------- */}
-      <div className="mx-auto max-w-7xl px-6 pt-16 md:pt-20">
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 p-8 backdrop-blur-sm sm:p-10">
+      <div className="mx-auto max-w-7xl px-6 pt-20 md:pt-28">
+        <div className="gold-ring relative overflow-hidden rounded-[2rem] bg-surface/70 p-8 sm:p-12 lg:p-14">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(80% 120% at 90% 10%, rgba(59,130,246,0.18) 0%, rgba(8,10,15,0) 60%)",
-            }}
+            className="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-brand-primary/15 blur-[100px]"
           />
-          <div className="relative flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-32 left-1/3 size-72 rounded-full bg-brand-secondary/10 blur-[100px]"
+          />
+          <div className="relative flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight text-balance sm:text-3xl">
-                Got something that should be running by itself?
+              <h2 className="max-w-2xl text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.04] font-medium tracking-[-0.035em] text-balance">
+                Got something that should be{" "}
+                <span className="font-serif font-normal tracking-[-0.01em] text-brand-primary italic">
+                  running by itself?
+                </span>
               </h2>
-              <p className="mt-2 max-w-xl text-sm text-text-secondary sm:text-base">
+              <p className="mt-4 max-w-xl text-sm leading-relaxed text-text-secondary sm:text-base">
                 Tell us what is eating your time. You will get an honest answer
                 on whether it is worth building — and what it would cost.
               </p>
@@ -159,7 +144,7 @@ export function SiteFooter() {
             <div className="flex shrink-0 flex-wrap gap-3">
               <Link
                 href="#contact"
-                className="inline-flex h-11 items-center gap-2 rounded-full bg-brand-primary px-6 text-sm font-semibold text-[#0B0F17] shadow-[0_6px_22px_rgba(59,130,246,0.35)] transition-colors hover:bg-brand-hover focus-visible:ring-3 focus-visible:ring-brand-primary/40 focus-visible:outline-none"
+                className="inline-flex h-12 items-center gap-2 rounded-full bg-brand-primary px-7 text-sm font-semibold text-primary-foreground shadow-[0_12px_40px_-12px_rgba(226,183,116,0.7)] transition-colors hover:bg-brand-hover focus-visible:ring-3 focus-visible:ring-brand-primary/40 focus-visible:outline-none"
               >
                 Start a project
                 <ArrowRight className="size-4" />
@@ -168,7 +153,7 @@ export function SiteFooter() {
                 href={CONTACT_WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-11 items-center gap-2 rounded-full border border-border bg-surface-muted/60 px-6 text-sm font-medium text-foreground transition-colors hover:border-brand-primary/50 hover:bg-surface-muted focus-visible:ring-3 focus-visible:ring-brand-primary/40 focus-visible:outline-none"
+                className="inline-flex h-12 items-center gap-2 rounded-full border border-border-strong bg-surface-muted/60 px-7 text-sm font-medium text-foreground transition-colors hover:border-brand-primary/50 hover:bg-surface-muted focus-visible:ring-3 focus-visible:ring-brand-primary/40 focus-visible:outline-none"
               >
                 <MessageCircle className="size-4" />
                 WhatsApp us
@@ -188,7 +173,7 @@ export function SiteFooter() {
             actually need — and hand every bit of it over in your name.
           </p>
           <p className="mt-5 flex items-center gap-2 text-sm text-text-muted">
-            <MapPin className="size-4 shrink-0 text-brand-secondary" />
+            <MapPin className="size-4 shrink-0 text-brand-primary" />
             Working with clients across Malaysia and remote
           </p>
         </div>
@@ -246,6 +231,25 @@ export function SiteFooter() {
             })}
           </ul>
         </div>
+      </div>
+
+      {/* ---------- Wordmark ---------- */}
+      {/* Full-width, gold-gradient signature. `vw` sizing makes it span the
+          viewport at any width; the fade at the foot sinks it into the page. */}
+      <div aria-hidden className="relative overflow-hidden px-4 select-none">
+        <p
+          className="text-gold-gradient text-center font-medium whitespace-nowrap"
+          style={{
+            fontSize: "clamp(4rem, 20.5vw, 19rem)",
+            letterSpacing: "-0.06em",
+            lineHeight: 0.85,
+            maskImage: "linear-gradient(to bottom, #000 30%, transparent 95%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, #000 30%, transparent 95%)",
+          }}
+        >
+          neurolyx
+        </p>
       </div>
 
       {/* ---------- Bottom bar ---------- */}

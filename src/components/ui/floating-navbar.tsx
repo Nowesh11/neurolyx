@@ -38,8 +38,9 @@ const LAMP_TRANSITION: LampTransition = {
  * Logo asset note: `logo.png` / `nlx.png` are opaque PNGs — white field, navy
  * artwork — so the usual `mix-blend-multiply` only strips the white against a
  * LIGHT backdrop. On this dark theme it would erase the artwork instead, so the
- * pre-generated `*-dark.png` variants are used: white field knocked out to
- * alpha, navy remapped to #E2E8F0, blue accent kept. Each sits in a cropped box
+ * `*-gold.png` variants are used: white field knocked out to alpha, navy
+ * remapped to ivory #F5EFE6 and the blue accent to champagne gold #E2B774
+ * (generated from the `*-dark.png` files with sharp). Each sits in a cropped box
  * (`object-contain` + a scale) to zoom past the padding baked into the source.
  */
 function Logo({ showWordmark = true }: { showWordmark?: boolean }) {
@@ -51,7 +52,7 @@ function Logo({ showWordmark = true }: { showWordmark?: boolean }) {
     >
       <span className="relative block h-6 w-8 shrink-0 overflow-hidden">
         <Image
-          src="/logo-dark.png"
+          src="/logo-gold.png"
           alt=""
           fill
           sizes="32px"
@@ -63,7 +64,7 @@ function Logo({ showWordmark = true }: { showWordmark?: boolean }) {
       {showWordmark && (
         <span className="relative block h-5 w-14 shrink-0 overflow-hidden">
           <Image
-            src="/nlx-dark.png"
+            src="/nlx-gold.png"
             alt="NLX"
             fill
             sizes="56px"
@@ -207,7 +208,7 @@ export function FloatingNavbar({
         </nav>
         <a
           href={contactHref}
-          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-[#0B0F17] transition-colors outline-none hover:bg-brand-hover active:bg-brand-active focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-primary-foreground transition-colors outline-none hover:bg-brand-hover active:bg-brand-active focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
           {ctaText}
         </a>

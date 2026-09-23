@@ -13,29 +13,24 @@ import { Environment, ContactShadows, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { PiWhatsappLogoBold } from "react-icons/pi";
-import Image from "next/image";
 
 /**
- * NLX THEME NOTES — DARK
- * - Stage: Deep Space #080A0F -> #10131A. Copy in #F8FAFC / #94A3B8.
- * - Accents stay blue: Electric Blue #2563EB, Bright Blue #3B82F6, Cyan #0891B2.
+ * NLX THEME NOTES — "Obsidian & Champagne"
+ * - Stage: warm obsidian #0A0908 -> #12100D. Copy in ivory #F5EFE6 / #A39A8E.
+ * - Accents: champagne gold #E2B774 (primary), ember #E07A4F (secondary).
  * - The robot is deliberately the LIGHT element on the dark stage: chassis and
- *   ears in #F1F5F9 / #E2E8F0 / #FFFFFF, so it reads as the focal object.
- * - Screen glow uses Bright Blue #3B82F6 — your own design doc names this
- *   color specifically for "hover states, animated elements, visual emphasis,"
- *   which is exactly what the glowing screen fresnel shader needs to read as lit.
- * - Antenna tip uses Cyan #0891B2 as the secondary accent (was pink in the original).
- * - The background image (hero-bg-dark.png) is generated separately via fal.ai —
- *   see the accompanying prompt document. It sits behind the transparent
- *   WebGL canvas as a subtle decorative layer, per your doc's Section 19/23 rules
- *   ("keep the visual subtle, don't make it look like a gaming website").
+ *   ears in warm ivory #F3EDE4 / #E6DDD0 / #FFFFFF, so it reads as the focal object.
+ * - Screen glow and the fill light are champagne gold; the antenna tip and the
+ *   heart-eye easter egg use ember.
+ * - The stage is pure CSS (radial blooms + a masked hairline grid) — no
+ *   background image, so nothing competes with the 3D scene on first load.
  *
  * DEVIATIONS FROM THE SUPPLIED FILE (each one deliberate, see comments inline):
  * 1. `showNavbar` prop added — the root layout already mounts FloatingNavbar
  *    (logo + links + CTA in one pill), so the hero's own AntennaNavbar is off by
  *    default to avoid two stacked navigations. Pass `showNavbar` to restore it.
- * 2. `<Image priority>` -> `<Image preload>` — `priority` is deprecated in
- *    Next.js 16 (node_modules/next/dist/docs/.../image.md).
+ * 2. The headline is the page's real <h1>; the oversized wordmark behind it is
+ *    decorative and hidden from assistive tech.
  * 3. `React.MutableRefObject` -> `React.RefObject` — deprecated in React 19 types.
  * 4. Robot offset + hero copy centring (see ResponsiveGroup and the copy block)
  *    so the text sits mid-height instead of pinned to the bottom edge.
@@ -147,9 +142,9 @@ function FloorGlow({
         size / 2,
       );
       g.addColorStop(0, "rgba(255,255,255,0.95)");
-      g.addColorStop(0.3, "rgba(226,232,240,0.45)");
-      g.addColorStop(0.6, "rgba(147,180,251,0.16)");
-      g.addColorStop(1, "rgba(147,180,251,0)");
+      g.addColorStop(0.3, "rgba(236,224,205,0.45)");
+      g.addColorStop(0.6, "rgba(226,183,116,0.16)");
+      g.addColorStop(1, "rgba(226,183,116,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, size, size);
     }
@@ -281,7 +276,7 @@ function GlassCapsule({
 
 // NLX: chassis kept light/neutral so the robot sits naturally on the Soft Cloud background
 const earBaseMat = new THREE.MeshStandardMaterial({
-  color: "#F1F5F9",
+  color: "#F3EDE4",
   roughness: 0.5,
 });
 const earRingMat = new THREE.MeshStandardMaterial({
@@ -289,22 +284,22 @@ const earRingMat = new THREE.MeshStandardMaterial({
   roughness: 0.3,
 });
 const earCenterMat = new THREE.MeshStandardMaterial({
-  color: "#E2E8F0",
+  color: "#E6DDD0",
   roughness: 0.8,
 });
 const antennaBaseMat = new THREE.MeshStandardMaterial({
-  color: "#94A3B8",
+  color: "#A89A86",
   roughness: 0.4,
   metalness: 0.5,
 });
 const antennaStickMat = new THREE.MeshStandardMaterial({
-  color: "#CBD5E1",
+  color: "#D4C8B6",
   roughness: 0.4,
   metalness: 0.2,
 });
-// NLX: antenna tip recolored from pink to Cyan (your doc's secondary accent color)
+// NLX: antenna tip recolored from pink to Ember, the secondary accent
 const antennaTipMat = new THREE.MeshStandardMaterial({
-  color: "#0891B2",
+  color: "#E07A4F",
   roughness: 0.2,
   toneMapped: false,
 });
@@ -383,13 +378,13 @@ function RobotEar({
 
 // Over-bright and untonemapped so the eyes read as lit glass on the dark stage.
 const eyeMat = new THREE.MeshBasicMaterial({
-  color: new THREE.Color(1.7, 1.9, 2.3),
+  color: new THREE.Color(2.4, 2.0, 1.45),
   toneMapped: false,
   transparent: true,
 });
 // NLX: heart-eye easter egg uses Cyan to stay in the secondary-accent family
 const heartMat = new THREE.MeshBasicMaterial({
-  color: "#0891B2",
+  color: "#E07A4F",
   toneMapped: false,
 });
 
@@ -568,7 +563,7 @@ function makeSpeckleTextures(): {
       // same ratio the arc-based version used.
       const bright = Math.random() > 0.85;
 
-      // #FFFFFF vs #CBD5E1
+      // #FFFFFF vs #D4C8B6
       dC[o] = bright ? 255 : 203;
       dC[o + 1] = bright ? 255 : 213;
       dC[o + 2] = bright ? 255 : 225;
@@ -613,8 +608,8 @@ function RobotPrototype({
     innerDropH: 0.03,
   },
   bodyParams = { bodyBevelR: 0.21, bodyBevelY: 0.38, bodyBevelT: 0.015 },
-  color = "#F1F5F9",
-  pantallaColor = "#3B82F6",
+  color = "#F3EDE4",
+  pantallaColor = "#E2B774",
   pantallaBrillo = 1.2,
   blinkCycle = 3.0,
   metalness = 0.0,
@@ -760,7 +755,7 @@ function RobotPrototype({
   // enough to separate from the near-black stage behind it.
   const headMat = useMemo(() => {
     return new THREE.MeshStandardMaterial({
-      color: "#131A26",
+      color: "#17120E",
       roughness: 1.0,
       metalness: 0.0,
     });
@@ -875,6 +870,15 @@ export interface NavItem {
   target?: string;
 }
 
+/** The terms strip along the bottom of the hero. Promises, not metrics — the
+ *  studio is new, so nothing here claims a track record. */
+const heroFacts = [
+  { title: "Fixed scope, fixed price", sub: "Agreed in writing before work starts" },
+  { title: "You own the code", sub: "Handed over in your name" },
+  { title: "One person, end to end", sub: "No account managers or hand-offs" },
+  { title: "Replies within a day", sub: "WhatsApp, call or email" },
+];
+
 export interface RobotHeroProps {
   backgroundText?: string;
   navItemsLeft?: NavItem[];
@@ -889,11 +893,14 @@ export interface RobotHeroProps {
   pantallaBrillo?: number;
   blinkCycle?: number;
   metalness?: number;
+  /** Small status pill above the headline. */
+  eyebrow?: string;
   headline?: string;
+  /** Second half of the headline, set in the serif italic accent. */
+  headlineAccent?: string;
   subheadline?: string;
   secondaryCtaText?: string;
   onSecondaryCtaClick?: () => void;
-  backgroundImageSrc?: string;
   /**
    * The hero ships with its own AntennaNavbar. The NLX layout already mounts
    * FloatingNavbar, so this is off by default — turn it on only if you drop that.
@@ -936,13 +943,13 @@ function AntennaNavbar({
                 }
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className="relative px-7 py-2.5 rounded-full bg-[#10131A]/80 text-[#F8FAFC] border border-[#252B36] hover:border-[#3A424F] text-sm font-medium backdrop-blur-sm transition-all overflow-hidden"
+                className="relative px-7 py-2.5 rounded-full bg-[#12100D]/80 text-[#F5EFE6] border border-[#2A2521] hover:border-[#3D3630] text-sm font-medium backdrop-blur-sm transition-all overflow-hidden"
               >
                 {item.label}
                 {hoveredIndex === idx && (
                   <motion.div
                     layoutId="navbar-indicator-left"
-                    className="absolute inset-0 border-b-[3px] border-[#3B82F6]"
+                    className="absolute inset-0 border-b-[3px] border-[#E2B774]"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -952,12 +959,12 @@ function AntennaNavbar({
 
           <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center pointer-events-auto cursor-pointer group z-10">
             <div className="relative flex items-center justify-center h-12 w-16">
-              <div className="absolute left-2 w-1.5 h-4 bg-[#3A424F] rounded-l-md transition-transform duration-300 group-hover:-translate-x-1" />
-              <div className="absolute right-2 w-1.5 h-4 bg-[#3A424F] rounded-r-md transition-transform duration-300 group-hover:translate-x-1" />
-              <div className="z-10 w-10 h-10 bg-[#151A23] border-2 border-[#252B36] backdrop-blur-md rounded-[12px] flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:border-[#3A424F]">
-                <div className="w-[70%] h-[60%] bg-[#080A0F] rounded-lg flex items-center justify-center gap-1.5 overflow-hidden">
-                  <div className="w-1.5 h-3 bg-[#3B82F6] rounded-[2px] shadow-[0_0_8px_#3B82F6] transition-transform duration-200 group-hover:scale-y-[0.2]" />
-                  <div className="w-1.5 h-3 bg-[#3B82F6] rounded-[2px] shadow-[0_0_8px_#3B82F6] transition-transform duration-200 group-hover:scale-y-[0.2]" />
+              <div className="absolute left-2 w-1.5 h-4 bg-[#3D3630] rounded-l-md transition-transform duration-300 group-hover:-translate-x-1" />
+              <div className="absolute right-2 w-1.5 h-4 bg-[#3D3630] rounded-r-md transition-transform duration-300 group-hover:translate-x-1" />
+              <div className="z-10 w-10 h-10 bg-[#1A1714] border-2 border-[#2A2521] backdrop-blur-md rounded-[12px] flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:border-[#3D3630]">
+                <div className="w-[70%] h-[60%] bg-[#0A0908] rounded-lg flex items-center justify-center gap-1.5 overflow-hidden">
+                  <div className="w-1.5 h-3 bg-[#E2B774] rounded-[2px] shadow-[0_0_8px_#E2B774] transition-transform duration-200 group-hover:scale-y-[0.2]" />
+                  <div className="w-1.5 h-3 bg-[#E2B774] rounded-[2px] shadow-[0_0_8px_#E2B774] transition-transform duration-200 group-hover:scale-y-[0.2]" />
                 </div>
               </div>
             </div>
@@ -970,13 +977,13 @@ function AntennaNavbar({
               rel={
                 contactTarget === "_blank" ? "noopener noreferrer" : undefined
               }
-              className="px-5 sm:px-7 py-2.5 rounded-full bg-[#10131A]/80 text-[#F8FAFC] border border-[#252B36] hover:bg-[#151A23] hover:border-[#3A424F] text-xs sm:text-sm font-medium backdrop-blur-sm transition-all"
+              className="px-5 sm:px-7 py-2.5 rounded-full bg-[#12100D]/80 text-[#F5EFE6] border border-[#2A2521] hover:bg-[#1A1714] hover:border-[#3D3630] text-xs sm:text-sm font-medium backdrop-blur-sm transition-all"
             >
               {contactText}
             </a>
             <button
               onClick={onCtaClick}
-              className="px-5 sm:px-7 py-2.5 rounded-full bg-[#3B82F6] text-[#0B0F17] text-xs sm:text-sm font-semibold hover:bg-[#60A5FA] active:bg-[#93B4FB] transition-colors flex items-center gap-2 shadow-[0_6px_22px_rgba(59,130,246,0.35)]"
+              className="px-5 sm:px-7 py-2.5 rounded-full bg-[#E2B774] text-[#0D0B09] text-xs sm:text-sm font-semibold hover:bg-[#ECC88E] active:bg-[#F3D9AC] transition-colors flex items-center gap-2 shadow-[0_6px_22px_rgba(226,183,116,0.35)]"
             >
               {ctaText}
               <PiWhatsappLogoBold size={18} />
@@ -986,7 +993,7 @@ function AntennaNavbar({
 
         <motion.div
           style={{ opacity: lineOpacity }}
-          className="w-full mt-6 border-b-2 border-dotted border-[#252B36]"
+          className="w-full mt-6 border-b-2 border-dotted border-[#2A2521]"
         />
       </div>
     </nav>
@@ -1006,17 +1013,18 @@ export function RobotHero({
   contactTarget,
   ctaText = "WhatsApp Us",
   onCtaClick,
-  color = "#F1F5F9",
+  color = "#F3EDE4",
   scale = 1,
-  pantallaColor = "#3B82F6",
+  pantallaColor = "#E2B774",
   pantallaBrillo = 1.7,
   blinkCycle = 3.0,
   metalness = 0.0,
-  headline = "Automate what's slowing your business down.",
-  subheadline = "AI automation and custom software for growing businesses — WhatsApp chatbots, AI chatbots, and full business systems, built end to end.",
+  eyebrow = "Independent AI & software studio",
+  headline = "Automate what's",
+  headlineAccent = "slowing your business down.",
+  subheadline = "WhatsApp and AI chatbots, workflow automation and custom software for growing businesses — designed, built and handed over by one studio, end to end.",
   secondaryCtaText = "See services",
   onSecondaryCtaClick,
-  backgroundImageSrc = "/hero-bg-dark.png",
   showNavbar = false,
 }: RobotHeroProps = {}) {
   const containerRef = useRef<HTMLElement>(null);
@@ -1051,14 +1059,14 @@ export function RobotHero({
   // neutral key plus a blue fill, so the light chassis keeps real form and a
   // blue rim instead of being flat-lit the way it was on the light background.
   const entorno = {
-    fondoArriba: "#080A0F",
-    fondoMedio: "#0B0F17",
-    fondoAbajo: "#10131A",
+    fondoArriba: "#0A0908",
+    fondoMedio: "#0D0B09",
+    fondoAbajo: "#12100D",
     luzAmbiente: 0.45,
     luzPrincipal: 1.25,
     luzPrincipalColor: "#FFFFFF",
     luzRelleno: 0.75,
-    luzRellenoColor: "#3B82F6",
+    luzRellenoColor: "#E2B774",
     // drei's ContactShadows can only ever darken: its shader resolves to
     // `vec4(ucolor * fragCoordZ * 2.0, 1.0 - fragCoordZ)`, so where the shadow
     // is densest the alpha is high but the colour is driven to black. A white
@@ -1077,51 +1085,54 @@ export function RobotHero({
         background: `linear-gradient(to bottom, ${entorno.fondoArriba} 0%, ${entorno.fondoArriba} 55%, ${entorno.fondoMedio} 65%, ${entorno.fondoAbajo} 100%)`,
       }}
     >
-      {/* fal.ai-generated background image — subtle abstract tech visualization,
-          sits below the watermark text and the 3D canvas. See the accompanying
-          prompt document for the exact generation brief. */}
-      <div className="absolute inset-0 z-0 animate-in fade-in ease-out fill-mode-both duration-1000">
-        <Image
-          src={backgroundImageSrc}
-          alt=""
-          fill
-          // `priority` is deprecated in Next.js 16; `preload` is the replacement
-          // and this is the hero's above-the-fold LCP candidate.
-          preload
-          sizes="100vw"
-          className="object-cover opacity-80"
+      {/* Warm stage, drawn in CSS rather than an image so nothing competes
+          with the 3D scene for bandwidth: a champagne bloom behind the robot,
+          a faint ember pool low on the left, and a hairline grid that fades
+          out toward the edges. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-0 pointer-events-none animate-in fade-in ease-out fill-mode-both duration-1000"
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(50% 58% at 72% 44%, rgba(226,183,116,0.17) 0%, rgba(226,183,116,0.05) 42%, rgba(10,9,8,0) 72%), radial-gradient(38% 45% at 6% 100%, rgba(224,122,79,0.13) 0%, rgba(10,9,8,0) 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #F5EFE6 1px, transparent 1px), linear-gradient(to bottom, #F5EFE6 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
+            maskImage:
+              "radial-gradient(ellipse 65% 60% at 62% 45%, #000 15%, transparent 75%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 65% 60% at 62% 45%, #000 15%, transparent 75%)",
+          }}
         />
       </div>
 
-      {/* Scrim: the generated art is brightest at the edges, which is exactly
-          where the copy sits. This darkens the left/centre so text stays legible
-          without flattening the artwork at the far edges. */}
+      {/* Outlined wordmark bled off the bottom edge — a hairline stroke
+          instead of a filled block, so it reads as texture, not as copy. */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          zIndex: 1,
-          background:
-            "radial-gradient(120% 90% at 28% 50%, rgba(8,10,15,0.92) 0%, rgba(8,10,15,0.72) 38%, rgba(8,10,15,0.28) 68%, rgba(8,10,15,0) 100%)",
-        }}
-      />
-
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden animate-in fade-in ease-out fill-mode-both duration-1000 delay-200"
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 flex justify-center pointer-events-none overflow-hidden select-none animate-in fade-in ease-out fill-mode-both duration-1000 delay-200"
         style={{ zIndex: 2 }}
       >
-        <h1
-          className="font-sans font-black select-none whitespace-nowrap"
+        <span
+          className="font-sans font-black whitespace-nowrap"
           style={{
-            color: "#F8FAFC",
-            opacity: 0.055,
-            letterSpacing: "-0.05em",
-            fontSize: "clamp(4rem, 15vw, 14rem)",
-            lineHeight: 1,
-            transform: `translate(0px, 40px) rotate(0deg)`,
+            color: "transparent",
+            WebkitTextStroke: "1px rgba(226,183,116,0.16)",
+            letterSpacing: "-0.04em",
+            fontSize: "clamp(6rem, 30vw, 26rem)",
+            lineHeight: 0.74,
           }}
         >
           {backgroundText}
-        </h1>
+        </span>
       </div>
 
       <div
@@ -1176,7 +1187,7 @@ export function RobotHero({
             all set `envMapIntensity={0}`, so they never used the HDR anyway.
           */}
           <Environment resolution={64} frames={1}>
-            <color attach="background" args={["#0B0F17"]} />
+            <color attach="background" args={["#0D0B09"]} />
             <Lightformer
               intensity={2.2}
               color="#FFFFFF"
@@ -1185,13 +1196,13 @@ export function RobotHero({
             />
             <Lightformer
               intensity={1.4}
-              color="#3B82F6"
+              color="#E2B774"
               position={[-4, 1, -2]}
               scale={[5, 5, 1]}
             />
             <Lightformer
               intensity={0.8}
-              color="#0891B2"
+              color="#E07A4F"
               position={[4, -1, -2]}
               scale={[4, 4, 1]}
             />
@@ -1252,36 +1263,80 @@ export function RobotHero({
           />
         )}
 
-        <div className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-8 flex-1 flex flex-col justify-end lg:justify-center">
+        <div className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 flex-1 flex flex-col justify-end lg:justify-center">
           {/* From `lg` up the copy is vertically centred beside the robot.
               Below that the robot lifts to the top and the copy sits under it,
               with padding that clears the pill nav fixed to the bottom. */}
-          <div className="flex flex-col gap-6 pb-28 sm:pb-20 lg:pb-0 w-full max-w-xl pointer-events-auto">
-            <h2 className="font-semibold text-[clamp(1.75rem,4vw,3rem)] leading-[1.1] text-[#F8FAFC]">
-              <WordReveal text={headline} delay={260} step={70} />
-            </h2>
+          <div className="flex flex-col gap-6 sm:gap-7 pb-28 sm:pb-20 lg:pb-0 lg:pt-10 w-full max-w-xl xl:max-w-[40rem] pointer-events-auto">
+            <p className="inline-flex w-fit items-center gap-2.5 rounded-full border border-[#2A2521] bg-[#12100D]/70 py-1.5 pr-4 pl-2.5 text-xs text-[#A39A8E] backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 ease-out fill-mode-both duration-700 delay-150">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#9DB8A0] opacity-60 motion-reduce:animate-none" />
+                <span className="relative inline-flex size-2 rounded-full bg-[#9DB8A0]" />
+              </span>
+              {eyebrow}
+            </p>
+
+            <h1 className="font-medium tracking-[-0.035em] text-[clamp(2.4rem,5.3vw,4.75rem)] leading-[1.02] text-[#F5EFE6]">
+              <WordReveal text={headline} delay={260} step={70} />{" "}
+              <WordReveal
+                text={headlineAccent}
+                delay={260 + headline.split(" ").length * 70}
+                step={70}
+                className="font-serif italic font-normal tracking-[-0.01em] text-[#E2B774]"
+              />
+            </h1>
+
             <WordReveal
               text={subheadline}
-              delay={260 + headline.split(" ").length * 70}
+              delay={260 + (headline + " " + headlineAccent).split(" ").length * 70}
               step={16}
-              className="block text-base sm:text-lg text-[#94A3B8] max-w-xl"
+              className="block text-base sm:text-lg leading-relaxed text-[#A39A8E] max-w-lg"
             />
-            <div className="flex flex-wrap gap-3 mt-2 animate-in fade-in slide-in-from-bottom-4 blur-in-[6px] ease-out fill-mode-both duration-700 delay-[580ms]">
+
+            <div className="flex flex-wrap items-center gap-3 mt-1 animate-in fade-in slide-in-from-bottom-4 blur-in-[6px] ease-out fill-mode-both duration-700 delay-[640ms]">
               <button
+                type="button"
                 onClick={onCtaClick}
-                className="px-6 py-3 rounded-full bg-[#3B82F6] text-[#0B0F17] text-sm font-semibold hover:bg-[#60A5FA] active:bg-[#93B4FB] transition-colors flex items-center gap-2 shadow-[0_6px_22px_rgba(59,130,246,0.35)]"
+                className="group inline-flex items-center gap-3 rounded-full bg-[#E2B774] py-1.5 pr-1.5 pl-6 text-sm font-semibold text-[#1A1206] shadow-[0_12px_40px_-12px_rgba(226,183,116,0.7)] transition-colors hover:bg-[#ECC88E] active:bg-[#F3D9AC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E2B774] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0908]"
               >
                 {ctaText}
-                <PiWhatsappLogoBold size={18} />
+                <span className="grid size-9 place-content-center rounded-full bg-[#1A1206] text-[#E2B774] transition-transform duration-300 group-hover:rotate-[-8deg] group-hover:scale-105 motion-reduce:transition-none">
+                  <PiWhatsappLogoBold size={17} />
+                </span>
               </button>
               <button
+                type="button"
                 onClick={onSecondaryCtaClick}
-                className="px-6 py-3 rounded-full bg-[#10131A]/80 border border-[#252B36] text-[#F8FAFC] text-sm font-medium backdrop-blur-sm hover:bg-[#151A23] hover:border-[#3A424F] transition-colors"
+                className="group inline-flex items-center gap-2 rounded-full border border-[#3D3630] bg-[#12100D]/60 px-6 py-3 text-sm font-medium text-[#F5EFE6] backdrop-blur-sm transition-colors hover:border-[#E2B774]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E2B774]/60"
               >
                 {secondaryCtaText}
+                <span
+                  aria-hidden
+                  className="transition-transform duration-300 group-hover:translate-y-0.5 motion-reduce:transition-none"
+                >
+                  ↓
+                </span>
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Terms strip — desktop only; on small screens the robot and copy
+            already fill the viewport. */}
+        <div className="relative hidden lg:block w-full max-w-[1400px] mx-auto px-10 pb-10 pointer-events-auto animate-in fade-in ease-out fill-mode-both duration-1000 delay-[900ms]">
+          <dl className="grid grid-cols-4 border-t border-[#2A2521]">
+            {heroFacts.map((fact, i) => (
+              <div key={fact.title} className="pt-5 pr-8">
+                <dt className="flex items-baseline gap-3 text-sm text-[#F5EFE6]">
+                  <span className="font-mono text-[11px] text-[#E2B774]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {fact.title}
+                </dt>
+                <dd className="mt-1 pl-8 text-xs text-[#6E665C]">{fact.sub}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

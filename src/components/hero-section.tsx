@@ -17,7 +17,7 @@ const RobotHero = dynamic(() => import("@/components/ui/robot-hero"), {
   ssr: false,
   // Plain color placeholder at the hero's exact height, in the dark stage
   // colour so there is no white flash before the scene mounts.
-  loading: () => <div className="h-dvh min-h-[600px] bg-[#080A0F]" />,
+  loading: () => <div className="h-dvh min-h-[600px] bg-[#0A0908]" />,
 });
 
 export function HeroSection() {

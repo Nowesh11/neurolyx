@@ -12,8 +12,12 @@ import {
   Phone,
 } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  Accent,
+  SectionLabel,
+  SectionTitle,
+} from "@/components/ui/section-heading"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupCard } from "@/components/ui/radio-group"
@@ -39,7 +43,7 @@ const channels = [
     detail: "Fastest reply — usually within the hour",
     href: CONTACT_WHATSAPP_URL,
     external: true,
-    accent: "text-[#22D3EE]",
+    accent: "text-sage",
   },
   {
     icon: Phone,
@@ -105,31 +109,24 @@ export function ContactSection() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(80% 55% at 85% 0%, rgba(59,130,246,0.12) 0%, rgba(8,10,15,0) 60%), radial-gradient(70% 50% at 5% 90%, rgba(8,145,178,0.10) 0%, rgba(8,10,15,0) 65%)",
+            "radial-gradient(70% 50% at 90% 0%, rgba(226,183,116,0.10) 0%, rgba(10,9,8,0) 60%), radial-gradient(60% 45% at 0% 100%, rgba(224,122,79,0.08) 0%, rgba(10,9,8,0) 65%)",
         }}
       />
 
       <div
         ref={ref}
         className={cn(
-          "relative mx-auto max-w-7xl px-6 py-20 transition-all duration-700 ease-out md:py-28 motion-reduce:transition-none",
+          "relative mx-auto max-w-7xl px-6 py-24 transition-all duration-700 ease-out md:py-32 motion-reduce:transition-none",
           revealed ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
         )}
       >
-        <div className="max-w-2xl">
-          <Badge
-            variant="outline"
-            className="mb-6 border-brand-primary/30 bg-brand-primary/10 text-brand-primary"
-          >
-            Contact
-          </Badge>
-          <h2 className="text-balance text-4xl leading-[1.05] font-bold tracking-tight sm:text-5xl">
+        <div className="max-w-3xl">
+          <SectionLabel index="06">Contact</SectionLabel>
+          <SectionTitle className="mt-6">
             Tell us what&apos;s slowing you down.{" "}
-            <span className="bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] bg-clip-text text-transparent">
-              We&apos;ll tell you if we can fix it.
-            </span>
-          </h2>
-          <p className="mt-6 text-base leading-relaxed text-text-secondary">
+            <Accent>We&apos;ll tell you if we can fix it.</Accent>
+          </SectionTitle>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary">
             No sales script and no obligation. Describe the problem and
             you&apos;ll get an honest answer on whether it&apos;s worth
             building, roughly what it would cost, and how long it would take.
@@ -147,9 +144,9 @@ export function ContactSection() {
                   href={channel.href}
                   target={channel.external ? "_blank" : undefined}
                   rel={channel.external ? "noopener noreferrer" : undefined}
-                  className="group flex items-start gap-4 rounded-2xl border border-border bg-surface/60 p-5 transition-all hover:-translate-y-0.5 hover:border-brand-primary/50 hover:bg-surface focus-visible:ring-3 focus-visible:ring-brand-primary/30 focus-visible:outline-none motion-reduce:hover:translate-y-0"
+                  className="group flex items-start gap-4 rounded-3xl border border-border bg-surface/60 p-6 transition-all hover:-translate-y-0.5 hover:border-brand-primary/50 hover:bg-surface focus-visible:ring-3 focus-visible:ring-brand-primary/30 focus-visible:outline-none motion-reduce:hover:translate-y-0"
                 >
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-muted transition-colors group-hover:border-brand-primary/40">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface-muted transition-colors group-hover:border-brand-primary/40">
                     <Icon className={cn("size-5", channel.accent)} />
                   </span>
                   <span className="flex min-w-0 flex-col gap-0.5">
@@ -168,8 +165,8 @@ export function ContactSection() {
               )
             })}
 
-            <div className="mt-2 flex items-start gap-3 rounded-2xl border border-border/60 bg-surface-muted/30 p-5">
-              <Clock className="mt-0.5 size-4 shrink-0 text-brand-secondary" />
+            <div className="mt-2 flex items-start gap-3 rounded-3xl border border-dashed border-border-strong/70 p-6">
+              <Clock className="mt-0.5 size-4 shrink-0 text-brand-primary" />
               <p className="text-sm leading-relaxed text-text-secondary">
                 <span className="font-medium text-foreground">
                   Replies within one working day.
@@ -182,7 +179,7 @@ export function ContactSection() {
 
           {/* Right — the form */}
           <div className="lg:col-span-7">
-            <div className="rounded-2xl border border-border bg-surface/60 p-6 shadow-sm backdrop-blur-sm sm:p-8">
+            <div className="gold-ring rounded-3xl bg-surface/80 p-6 shadow-[0_30px_80px_-40px_rgba(226,183,116,0.25)] backdrop-blur-sm sm:p-9">
               {showSuccess ? (
                 <div
                   ref={outcomeRef}
@@ -406,7 +403,7 @@ export function ContactSection() {
                       type="submit"
                       size="lg"
                       disabled={pending}
-                      className="h-11 rounded-full px-7"
+                      className="h-12 rounded-full px-8 font-semibold"
                     >
                       {pending ? (
                         <>

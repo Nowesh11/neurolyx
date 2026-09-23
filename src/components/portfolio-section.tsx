@@ -1,12 +1,27 @@
 "use client"
 
-import * as React from "react"
+import Image from "next/image"
+import { ArrowUpRight } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import {
-  CircularGallery,
-  type GalleryItem,
-} from "@/components/ui/circular-gallery"
+  Accent,
+  Reveal,
+  SectionLabel,
+  SectionTitle,
+} from "@/components/ui/section-heading"
+import { cn } from "@/lib/utils"
+
+type Project = {
+  title: string
+  category: string
+  description: string
+  href: string
+  /** Remove once a project is real — see the note below. */
+  tag?: string
+  image: { src: string; alt: string }
+  /** Bento placement on the 12-column desktop grid. */
+  span: string
+}
 
 /**
  * ─────────────────────────────────────────────────────────────────────────
@@ -19,122 +34,186 @@ import {
  *
  *  Swapping in the real thing is just this array: set `href` to the live
  *  site or case study (external URLs open in a new tab automatically), drop
- *  the screenshot in `public/work/`, and delete the `tag: "Concept"` line
- *  plus the disclaimer under the heading below.
+ *  the image in `public/img/`, and delete the `tag: "Concept"` line plus
+ *  the disclaimer under the heading below.
  * ─────────────────────────────────────────────────────────────────────────
  */
-const projects: GalleryItem[] = [
+const projects: Project[] = [
   {
     title: "Clinic booking assistant",
+    category: "WhatsApp · Scheduling",
     description:
-      "A WhatsApp assistant that answers enquiries, checks the calendar and books the slot — without the front desk touching it.",
+      "Answers enquiries, checks the calendar and books the slot — without the front desk touching it.",
     href: "#contact",
     tag: "Concept",
     image: {
-      url: "/work/clinic-booking.png",
-      alt: "Abstract glowing calendar and message flow",
+      src: "/img/work-clinic.jpg",
+      alt: "A dark glass calendar slab beside a floating chat bubble",
     },
+    span: "lg:col-span-7 lg:row-span-2",
   },
   {
     title: "Retail order assistant",
+    category: "AI chat · E-commerce",
     description:
-      "Customers ask for stock, sizing and delivery times in chat and get answers pulled straight from the live catalogue.",
+      "Stock, sizing and delivery times answered in chat, straight from the live catalogue.",
     href: "#contact",
     tag: "Concept",
     image: {
-      url: "/work/retail-assistant.png",
-      alt: "Abstract retail product grid lit in blue",
+      src: "/img/work-retail.jpg",
+      alt: "Matte black gift boxes and shopping bags with gold edges",
     },
+    span: "lg:col-span-5",
   },
   {
     title: "Field service dispatch",
+    category: "Mobile · Operations",
     description:
-      "Jobs land, get assigned to the nearest technician and close out with photos and a signature from the phone.",
+      "Jobs assigned to the nearest technician and closed out with photos and a signature.",
     href: "#contact",
     tag: "Concept",
     image: {
-      url: "/work/field-service.png",
-      alt: "Abstract map and routing lines",
+      src: "/img/work-field.jpg",
+      alt: "A black stone relief map traced with gold route lines",
     },
+    span: "lg:col-span-5",
   },
   {
     title: "Operations control tower",
+    category: "Custom software",
     description:
-      "One screen pulling from every system the business runs, so the day starts with current numbers instead of a spreadsheet.",
+      "One screen pulling from every system the business runs.",
     href: "#contact",
     tag: "Concept",
     image: {
-      url: "/work/control-tower.png",
-      alt: "Abstract layered control panels",
+      src: "/img/work-tower.jpg",
+      alt: "Tall glass control panels arranged in a semicircle",
     },
+    span: "lg:col-span-4",
   },
   {
     title: "Live operations dashboard",
+    category: "Analytics",
     description:
-      "Revenue, jobs and response times updating as they happen, with alerts when something drifts out of range.",
+      "Revenue, jobs and response times updating live, with alerts on drift.",
     href: "#contact",
     tag: "Concept",
     image: {
-      url: "/work/ops-dashboard.jpg",
-      alt: "Glowing charts on a dark glass panel",
+      src: "/img/work-dashboard.jpg",
+      alt: "A dark glass panel showing glowing gold charts",
     },
+    span: "lg:col-span-4",
   },
   {
     title: "Invoice & document flow",
+    category: "Automation",
     description:
-      "Quotes, invoices and follow-ups generated, sent and chased automatically, wired into the accounting tools already in use.",
+      "Quotes and invoices generated, sent and chased automatically.",
     href: "#contact",
     tag: "Concept",
     image: {
-      url: "/work/invoice-automation.jpg",
-      alt: "Translucent documents flowing along a lit arc",
+      src: "/img/work-invoice.jpg",
+      alt: "Ivory paper sheets flowing along an arc of gold light",
     },
+    span: "lg:col-span-4",
   },
 ]
 
-export function PortfolioSection() {
-  // The gallery turns as this tall element scrolls past; the viewport inside
-  // it sticks. Keeping the track here rather than inside the gallery lets the
-  // gallery stay a plain, reusable component.
-  const trackRef = React.useRef<HTMLDivElement>(null)
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const external = /^https?:\/\//.test(project.href)
+  const featured = index === 0
 
   return (
-    <div ref={trackRef} className="relative w-full bg-background h-[280vh]">
-      <div className="sticky top-0 flex h-dvh w-full flex-col items-center justify-center overflow-hidden">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(60% 50% at 50% 50%, rgba(59,130,246,0.12) 0%, rgba(8,10,15,0) 70%)",
-          }}
-        />
+    <a
+      href={project.href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      className="group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-3xl border border-border bg-surface outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+    >
+      <Image
+        src={project.image.src}
+        alt={project.image.alt}
+        fill
+        sizes={
+          featured
+            ? "(min-width: 1024px) 58vw, 100vw"
+            : "(min-width: 1024px) 34vw, (min-width: 640px) 50vw, 100vw"
+        }
+        className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06] motion-reduce:transition-none"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent transition-opacity duration-500 group-hover:opacity-90"
+      />
 
-        <div className="absolute inset-x-0 top-20 z-20 px-6 text-center sm:top-24">
-          <Badge
-            variant="outline"
-            className="mb-4 border-brand-primary/30 bg-brand-primary/10 text-brand-primary"
+      <div className="absolute inset-x-0 top-0 flex items-start justify-between p-5 sm:p-6">
+        {project.tag ? (
+          <span className="rounded-full border border-white/10 bg-background/60 px-2.5 py-1 text-[11px] font-medium tracking-[0.14em] text-text-secondary uppercase backdrop-blur-md">
+            {project.tag}
+          </span>
+        ) : (
+          <span />
+        )}
+        <span className="grid size-10 translate-y-1 place-content-center rounded-full bg-brand-primary text-primary-foreground opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+          <ArrowUpRight className="size-4" />
+        </span>
+      </div>
+
+      <div className="relative p-5 sm:p-7">
+        <p className="font-mono text-[11px] tracking-wide text-brand-primary">
+          {String(index + 1).padStart(2, "0")} — {project.category}
+        </p>
+        <h3
+          className={cn(
+            "mt-2 font-medium tracking-[-0.03em] text-foreground",
+            featured ? "text-2xl sm:text-4xl" : "text-xl sm:text-2xl"
+          )}
+        >
+          {project.title}
+        </h3>
+        <p
+          className={cn(
+            "mt-2 max-w-md text-sm leading-relaxed text-text-secondary",
+            !featured && "line-clamp-2"
+          )}
+        >
+          {project.description}
+        </p>
+      </div>
+    </a>
+  )
+}
+
+export function PortfolioSection() {
+  return (
+    <div className="relative mx-auto w-full max-w-7xl px-6 py-24 md:py-32">
+      <Reveal className="mb-14 grid grid-cols-1 gap-8 lg:mb-16 lg:grid-cols-12 lg:items-end">
+        <div className="lg:col-span-7">
+          <SectionLabel index="03">Selected work</SectionLabel>
+          <SectionTitle className="mt-6">
+            What this looks like <Accent>in practice.</Accent>
+          </SectionTitle>
+        </div>
+        <p className="max-w-md text-sm leading-relaxed text-text-secondary lg:col-span-5 lg:justify-self-end">
+          Concept pieces showing the kind of thing we build — real case
+          studies go up here as projects ship. Each one is a starting point
+          for a conversation about yours.
+        </p>
+      </Reveal>
+
+      <div className="grid auto-rows-[minmax(22rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12 lg:gap-5">
+        {projects.map((project, i) => (
+          <Reveal
+            key={project.title}
+            delay={(i % 3) * 90}
+            className={cn(
+              (i === 0 || i === projects.length - 1) && "sm:col-span-2",
+              project.span
+            )}
           >
-            Selected work
-          </Badge>
-          <h2 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl md:text-5xl">
-            What this looks like{" "}
-            <span className="bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] bg-clip-text text-transparent">
-              in practice
-            </span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-text-secondary">
-            Concept pieces showing the kind of thing we build — real case
-            studies go up here as projects ship. Scroll to turn the carousel.
-          </p>
-        </div>
-
-        {/* Nudged down so the ring clears the heading block above it — the
-            cards are centred in the viewport, which otherwise puts the front
-            card's top edge right under the sub-heading. */}
-        <div className="absolute inset-0 z-10 translate-y-16 sm:translate-y-20">
-          <CircularGallery items={projects} trackRef={trackRef} turns={1} />
-        </div>
+            <ProjectCard project={project} index={i} />
+          </Reveal>
+        ))}
       </div>
     </div>
   )

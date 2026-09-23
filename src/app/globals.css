@@ -5,43 +5,45 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ---------------------------------------------------------------------------
- * NLX brand tokens — locked. Do not substitute shadcn's default theme colors.
+ * NLX brand tokens — "Obsidian & Champagne".
+ *
+ * Warm near-black instead of blue-black, ivory instead of cool white, with a
+ * champagne-gold primary and an ember secondary. Sage is the calm third
+ * colour for success / live states. Every component class traces back to
+ * these tokens — do not reach for Tailwind's default palette.
+ *
+ * The site ships dark (`<html class="dark">`); :root holds a matching warm
+ * light theme so shadcn primitives still look right if it is ever toggled.
  * ------------------------------------------------------------------------- */
 :root {
-  --background: #F8FAFC;
-  --surface: #FFFFFF;
-  --surface-muted: #F1F5F9;
+  --background: #F7F3EC;
+  --surface: #FFFDF9;
+  --surface-muted: #EFE9DF;
 
-  --text-primary: #0F172A;
-  --text-secondary: #64748B;
-  --text-muted: #94A3B8;
+  --text-primary: #1A1612;
+  --text-secondary: #6B6258;
+  --text-muted: #978D80;
 
-  --border: #E2E8F0;
-  --border-strong: #CBD5E1;
+  --border: #E4DCCF;
+  --border-strong: #CFC4B3;
 
-  --brand-primary: #2563EB;
-  --brand-hover: #1D4ED8;
-  --brand-active: #1E40AF;
+  --brand-primary: #9A6B24;
+  --brand-hover: #82591C;
+  --brand-active: #6B4814;
 
-  --brand-secondary: #0891B2;
-  --brand-light: #DBEAFE;
+  --brand-secondary: #C2582F;
+  --brand-light: #F3E6CE;
 
-  --dark-background: #080A0F;
-  --dark-surface: #10131A;
-  --dark-surface-hover: #151A23;
-  --dark-border: #252B36;
+  --sage: #5E7F66;
 
-  --dark-text-primary: #F8FAFC;
-  --dark-text-secondary: #94A3B8;
-
-  --success: #16A34A;
-  --success-bg: #DCFCE7;
-  --warning: #D97706;
-  --warning-bg: #FEF3C7;
-  --error: #DC2626;
-  --error-bg: #FEE2E2;
-  --info: #0284C7;
-  --info-bg: #E0F2FE;
+  --success: #3F7D52;
+  --success-bg: #E1EEE3;
+  --warning: #B7791F;
+  --warning-bg: #F8EBD2;
+  --error: #C2412D;
+  --error-bg: #F8E1DC;
+  --info: #5E7F66;
+  --info-bg: #E3ECE5;
 }
 
 /* shadcn's semantic slots, re-pointed at the NLX tokens above so that any
@@ -65,10 +67,10 @@
   --ring: var(--brand-primary);
   --chart-1: var(--brand-primary);
   --chart-2: var(--brand-secondary);
-  --chart-3: var(--brand-active);
+  --chart-3: var(--sage);
   --chart-4: var(--border-strong);
   --chart-5: var(--text-secondary);
-  --radius: 0.625rem;
+  --radius: 0.75rem;
   --sidebar: var(--surface);
   --sidebar-foreground: var(--text-primary);
   --sidebar-primary: var(--brand-primary);
@@ -80,44 +82,56 @@
 }
 
 .dark {
-  --background: var(--dark-background);
-  --surface: var(--dark-surface);
-  --surface-muted: var(--dark-surface-hover);
+  --background: #0A0908;
+  --surface: #12100D;
+  --surface-muted: #1A1714;
 
-  --text-primary: var(--dark-text-primary);
-  --text-secondary: var(--dark-text-secondary);
-  --text-muted: #64748B;
+  --text-primary: #F5EFE6;
+  --text-secondary: #A39A8E;
+  /* #6E665C clears 3:1 on the stage — used only for small meta labels. */
+  --text-muted: #7A7166;
 
-  --border: var(--dark-border);
-  --border-strong: #3A424F;
+  --border: #26221D;
+  --border-strong: #3D3630;
 
-  --brand-light: #14264A;
+  --brand-primary: #E2B774;
+  --brand-hover: #ECC88E;
+  --brand-active: #F3D9AC;
 
-  /* Lift the blue ramp for dark surfaces: #2563EB only reaches ~3.3:1 against
-     #10131A. #3B82F6 is the doc's "visual emphasis" blue and clears 4.5:1. */
-  --brand-primary: #3B82F6;
-  --brand-hover: #60A5FA;
-  --brand-active: #93B4FB;
+  --brand-secondary: #E07A4F;
+  --brand-light: #2A2118;
 
-  --foreground: var(--dark-text-primary);
-  --card: var(--dark-surface);
-  --card-foreground: var(--dark-text-primary);
-  --popover: var(--dark-surface);
-  --popover-foreground: var(--dark-text-primary);
+  --sage: #9DB8A0;
+
+  --success: #9DB8A0;
+  --success-bg: #18201A;
+  --warning: #E9B85C;
+  --warning-bg: #261E10;
+  --error: #F08A6C;
+  --error-bg: #2A1510;
+  --info: #9DB8A0;
+  --info-bg: #18201A;
+
+  --foreground: var(--text-primary);
+  --card: var(--surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-primary);
   --primary: var(--brand-primary);
-  --primary-foreground: var(--dark-text-primary);
-  --secondary: var(--dark-surface-hover);
-  --secondary-foreground: var(--dark-text-primary);
-  --muted: var(--dark-surface-hover);
-  --muted-foreground: var(--dark-text-secondary);
+  /* Dark ink on gold: 10.6:1, versus 1.9:1 for ivory on gold. */
+  --primary-foreground: #1A1206;
+  --secondary: var(--surface-muted);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--surface-muted);
+  --muted-foreground: var(--text-secondary);
   --accent: var(--brand-light);
-  --accent-foreground: #93B4FB;
-  --input: var(--dark-border);
-  --sidebar: var(--dark-surface);
-  --sidebar-foreground: var(--dark-text-primary);
-  --sidebar-accent: var(--dark-surface-hover);
-  --sidebar-accent-foreground: var(--dark-text-primary);
-  --sidebar-border: var(--dark-border);
+  --accent-foreground: var(--brand-active);
+  --input: var(--border);
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-accent: var(--surface-muted);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border);
 }
 
 /* Expose every token as a Tailwind color utility, so component classes trace
@@ -140,6 +154,7 @@
   --color-brand-active: var(--brand-active);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-light: var(--brand-light);
+  --color-sage: var(--sage);
 
   --color-success: var(--success);
   --color-success-bg: var(--success-bg);
@@ -152,6 +167,7 @@
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument-serif);
   --font-heading: var(--font-geist-sans);
 
   --color-sidebar-ring: var(--sidebar-ring);
@@ -193,56 +209,105 @@
 }
 
 /* --------------------------------------------------------------------------
- * Ambient motion for the services carousel. Kept as plain CSS keyframes so it
- * runs on the compositor and needs no JS animation loop.
+ * Motion. Plain CSS keyframes so it runs on the compositor with no JS loop.
  * ----------------------------------------------------------------------- */
-@keyframes nlx-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(7%, -5%, 0) scale(1.1);
-  }
-}
-
-@keyframes nlx-drift-alt {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.06);
-  }
-  50% {
-    transform: translate3d(-6%, 6%, 0) scale(1);
-  }
-}
-
-/* Centred elements need the -50%/-50% baked in, or the animation would
-   overwrite the translate utilities that position them. */
-@keyframes nlx-glow {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.9;
-    transform: translate(-50%, -50%) scale(1.07);
-  }
-}
-
-@keyframes nlx-progress {
+@keyframes nlx-marquee {
   from {
-    transform: scaleX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: scaleX(1);
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes nlx-marquee-reverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes nlx-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes nlx-spin-slow {
+  to {
+    transform: rotate(360deg);
   }
 }
 
 @theme {
-  --animate-nlx-drift: nlx-drift 22s ease-in-out infinite;
-  --animate-nlx-drift-alt: nlx-drift-alt 28s ease-in-out infinite;
-  --animate-nlx-glow: nlx-glow 9s ease-in-out infinite;
+  --animate-nlx-marquee: nlx-marquee 45s linear infinite;
+  --animate-nlx-marquee-reverse: nlx-marquee-reverse 45s linear infinite;
+  --animate-nlx-shimmer: nlx-shimmer 6s linear infinite;
+  --animate-nlx-spin-slow: nlx-spin-slow 14s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+ * Reusable brand treatments.
+ * ----------------------------------------------------------------------- */
+@utility text-gold-gradient {
+  background-image: linear-gradient(
+    100deg,
+    #f3d9ac 0%,
+    #e2b774 38%,
+    #e07a4f 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* A 1px border drawn with a gradient — mask trick, so it respects radius
+ * and leaves the element's own background untouched. */
+@utility gold-ring {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      140deg,
+      rgba(243, 217, 172, 0.75),
+      rgba(226, 183, 116, 0.15) 35%,
+      rgba(224, 122, 79, 0.1) 65%,
+      rgba(224, 122, 79, 0.55)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* Edge fade for marquees. */
+@utility mask-fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
 }
 
 @layer base {
@@ -252,16 +317,38 @@
   html {
     @apply font-sans;
     scroll-behavior: smooth;
-    /* keep anchor targets clear of the sticky header + floating pill nav */
-    scroll-padding-top: 6rem;
+    /* keep anchor targets clear of the floating pill nav */
+    scroll-padding-top: 5rem;
   }
   body {
     @apply bg-background text-text-primary;
   }
+  ::selection {
+    background: rgba(226, 183, 116, 0.35);
+    color: #f5efe6;
+  }
+}
+
+/* Film grain over the whole page — the single cheapest thing that makes a
+ * flat dark UI read as "printed" rather than "screen". Static SVG noise, no
+ * animation, no pointer events. */
+.nlx-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .animate-nlx-marquee,
+  .animate-nlx-marquee-reverse,
+  .animate-nlx-shimmer,
+  .animate-nlx-spin-slow {
+    animation: none;
   }
 }

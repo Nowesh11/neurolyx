@@ -12,8 +12,8 @@ import { FloatingNavbar, type NavItem } from "@/components/ui/floating-navbar"
 const navItems: NavItem[] = [
   { name: "Home", url: "#home", icon: Home },
   { name: "Services", url: "#services", icon: Layers },
-  { name: "Portfolio", url: "#portfolio", icon: Briefcase },
   { name: "About", url: "#about", icon: User },
+  { name: "Work", url: "#portfolio", icon: Briefcase },
   { name: "Stack", url: "#stack", icon: Code2 },
   { name: "Pricing", url: "#pricing", icon: Tag },
   { name: "Contact", url: "#contact", icon: Mail },
